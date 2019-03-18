@@ -1,0 +1,50 @@
+{
+  "name": "hive-summary",
+  "properties": {
+    "structure": [
+      {
+        "name": "log_date",
+        "type": "String"
+      },
+      {
+        "name": "requests",
+        "type": "Int64"
+      },
+      {
+        "name": "bytes_in",
+        "type": "Decimal"
+      },
+      {
+        "name": "bytes_out",
+        "type": "Decimal"
+      }
+    ],
+    "type": "AzureBlob",
+    "linkedServiceName": "blob-store",
+    "typeProperties": {
+      "folderPath": "adf-data/iislogs/summary/year={Year}/month={Month}/",
+      "partitionedBy": [
+        {
+          "name": "Year",
+          "value": {
+            "type": "DateTime",
+            "date": "SliceStart",
+            "format": "yyyy"
+          }
+        },
+        {
+          "name": "Month",
+          "value": {
+            "type": "DateTime",
+            "date": "SliceStart",
+            "format": "%M"
+          }
+        }
+      ]
+    },
+    "availability": {
+      "frequency": "Month",
+      "interval": 1
+    }
+  }
+}

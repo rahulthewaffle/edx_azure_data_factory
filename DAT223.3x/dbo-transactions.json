@@ -1,0 +1,24 @@
+{
+  "name": "dbo-transactions",
+  "properties": {
+    "type": "AzureSqlTable",
+    "linkedServiceName": "sql-database",
+    "structure": [
+      {
+        "name": "tdate",
+        "type": "Datetime"
+      },
+      {
+        "name": "amount",
+        "type": "Decimal"
+      }
+    ],
+    "typeProperties": {
+      "tableName": "dbo.transactions"
+    },
+    "availability": {
+      "frequency": "Minute",
+      "interval": 15
+    }
+  }
+}

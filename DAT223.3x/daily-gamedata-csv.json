@@ -1,0 +1,63 @@
+{
+  "name": "daily-gamedata-csv",
+  "properties": {
+    "structure": [
+      {
+        "name": "player",
+        "type": "String"
+      },
+      {
+        "name": "time",
+        "type": "String"
+      },
+      {
+        "name": "points",
+        "type": "Int32"
+      }
+    ],
+    "published": false,
+    "type": "AzureBlob",
+    "linkedServiceName": "blob-store",
+    "typeProperties": {
+      "folderPath": "adf-data/gamedata/{Year}/{Month}",
+      "fileName": "{Day}.csv",
+      "format": {
+        "type": "TextFormat",
+        "columnDelimiter": ",",
+        "firstRowAsHeader": true
+      },
+      "partitionedBy": [
+        {
+          "name": "Year",
+          "value": {
+            "type": "DateTime",
+            "date": "SliceStart",
+            "format": "yyyy"
+          }
+        },
+        {
+          "name": "Month",
+          "value": {
+            "type": "DateTime",
+            "date": "SliceStart",
+            "format": "MM"
+          }
+        },
+        {
+          "name": "Day",
+          "value": {
+            "type": "DateTime",
+            "date": "SliceStart",
+            "format": "dd"
+          }
+        }
+      ]
+    },
+    "availability": {
+      "frequency": "Day",
+      "interval": 1
+    },
+    "external": true,
+    "policy": {}
+  }
+}

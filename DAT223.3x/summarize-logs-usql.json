@@ -1,0 +1,83 @@
+{
+  "name": "Summarize Logs - U-SQL",
+  "properties": {
+    "activities": [
+      {
+        "type": "DataLakeAnalyticsU-SQL",
+        "typeProperties": {
+          "scriptPath": "adf-data/iislogs/SummarizeLogs.usql",
+          "scriptLinkedService": "blob-store",
+          "degreeOfParallelism": 2,
+          "parameters": {
+            "log_file": "$$Text.Format('wasb://adf-data@<storage_acct>.blob.core.windows.net/iislogs/{0:yyyy}/{1:MM}/log.txt', SliceStart, SliceStart)",
+            "summary_file": "$$Text.Format('iislogs/summary/{0:yyyy}/{1:MM}/summary.txt', SliceStart, SliceStart)"
+          }
+        },
+        "inputs": [
+          {
+            "name": "usql-iislog-txt"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "usql-summary"
+          }
+        ],
+        "policy": {
+          "timeout": "01:00:00",
+          "concurrency": 2,
+          "executionPriorityOrder": "OldestFirst",
+          "retry": 2
+        },
+        "scheduler": {
+          "frequency": "Month",
+          "interval": 1
+        },
+        "name": "U-SQL Script to Summarize Logs",
+        "linkedServiceName": "adl-analytics"
+      },
+      {
+        "type": "Copy",
+        "typeProperties": {
+          "source": {
+            "type": "AzureDataLakeStoreSource",
+            "recursive": false
+          },
+          "sink": {
+            "type": "SqlSink",
+            "writeBatchSize": 0,
+            "writeBatchTimeout": "00:00:00"
+          },
+          "translator": {
+            "type": "TabularTranslator",
+            "columnMappings": "log_date:log_date,requests:requests,bytes_in:bytes_in,bytes_out:bytes_out"
+          }
+        },
+        "inputs": [
+          {
+            "name": "usql-summary"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "dbo-usql_logs"
+          }
+        ],
+        "policy": {
+          "timeout": "01:00:00",
+          "concurrency": 2,
+          "executionPriorityOrder": "OldestFirst",
+          "retry": 2
+        },
+        "scheduler": {
+          "frequency": "Month",
+          "interval": 1
+        },
+        "name": "Copy summarized data to SQL"
+      }
+    ],
+    "start": "2016-01-01T00:00:00Z",
+    "end": "2016-06-01T23:59:59Z",
+    "pipelineMode": "Scheduled"
+  }
+}

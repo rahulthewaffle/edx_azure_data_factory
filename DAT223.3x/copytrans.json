@@ -1,0 +1,37 @@
+{
+  "name": "copytrans",
+  "properties": {
+    "activities": [
+      {
+        "type": "Copy",
+        "typeProperties": {
+          "source": {
+            "type": "BlobSource",
+            "recursive": false
+          },
+          "sink": {
+            "type": "SqlSink",
+            "writeBatchSize": 0,
+            "writeBatchTimeout": "00:00:00"
+          },
+          "translator": {
+            "type": "TabularTranslator",
+            "columnMappings": "tdate:tdate,amount:amount"
+          }
+        },
+        "inputs": [
+          {
+            "name": "transactions-txt"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "dbo-transactions"
+          }
+        ],
+        "name": "CopyTransData"
+      }
+    ],
+    "pipelineMode": "OneTime"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "dbo-points",
+  "properties": {
+    "type": "AzureSqlTable",
+    "linkedServiceName": "sql-database",
+    "structure": [
+      {
+        "name": "player",
+        "type": "String"
+      },
+      {
+        "name": "time",
+        "type": "String"
+      },
+      {
+        "name": "points",
+        "type": "Int32"
+      }
+    ],
+    "typeProperties": {
+      "tableName": "dbo.points"
+    },
+    "availability": {
+      "frequency": "Day",
+      "interval": 1
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "dbo-usql_logs",
+  "properties": {
+    "type": "AzureSqlTable",
+    "linkedServiceName": "sql-database",
+    "structure": [
+      {
+        "name": "log_date",
+        "type": "String"
+      },
+      {
+        "name": "requests",
+        "type": "Int32"
+      },
+      {
+        "name": "bytes_in",
+        "type": "Decimal"
+      },
+      {
+        "name": "bytes_out",
+        "type": "Decimal"
+      }
+    ],
+    "typeProperties": {
+      "tableName": "dbo.usql_logs"
+    },
+    "availability": {
+      "frequency": "Month",
+      "interval": 1
+    }
+  }
+}

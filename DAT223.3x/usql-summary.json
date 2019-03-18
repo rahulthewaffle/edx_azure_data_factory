@@ -1,0 +1,56 @@
+{
+  "name": "usql-summary",
+  "properties": {
+    "structure": [
+      {
+        "name": "log_date",
+        "type": "String"
+      },
+      {
+        "name": "requests",
+        "type": "Int64"
+      },
+      {
+        "name": "bytes_in",
+        "type": "Decimal"
+      },
+      {
+        "name": "bytes_out",
+        "type": "Decimal"
+      }
+    ],
+    "published": false,
+    "type": "AzureDataLakeStore",
+    "linkedServiceName": "adl-store",
+    "typeProperties": {
+      "fileName": "summary.txt",
+      "folderPath": "iislogs/summary/{Year}/{Month}",
+      "format": {
+        "type": "TextFormat",
+        "columnDelimiter": ","
+      },
+      "partitionedBy": [
+        {
+          "name": "Year",
+          "value": {
+            "type": "DateTime",
+            "date": "SliceStart",
+            "format": "yyyy"
+          }
+        },
+        {
+          "name": "Month",
+          "value": {
+            "type": "DateTime",
+            "date": "SliceStart",
+            "format": "MM"
+          }
+        }
+      ]
+    },
+    "availability": {
+      "frequency": "Month",
+      "interval": 1
+    }
+  }
+}

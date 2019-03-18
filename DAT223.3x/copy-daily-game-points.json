@@ -1,0 +1,49 @@
+{
+  "name": "Copy Daily Game Points",
+  "properties": {
+    "activities": [
+      {
+        "type": "Copy",
+        "typeProperties": {
+          "source": {
+            "type": "BlobSource",
+            "recursive": false
+          },
+          "sink": {
+            "type": "SqlSink",
+            "writeBatchSize": 0,
+            "writeBatchTimeout": "00:00:00"
+          },
+          "translator": {
+            "type": "TabularTranslator",
+            "columnMappings": "player:player,time:time,points:points"
+          }
+        },
+        "inputs": [
+          {
+            "name": "daily-gamedata-csv"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "dbo-points"
+          }
+        ],
+        "policy": {
+          "timeout": "00:05:00",
+          "concurrency": 5,
+          "executionPriorityOrder": "OldestFirst",
+          "retry": 1
+        },
+        "scheduler": {
+          "frequency": "Day",
+          "interval": 1
+        },
+        "name": "Copy points data"
+      }
+    ],
+    "start": "2016-01-01T00:00:00Z",
+    "end": "2016-06-30T23:59:59Z",
+    "pipelineMode": "Scheduled"
+  }
+}

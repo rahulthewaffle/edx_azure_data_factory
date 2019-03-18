@@ -1,0 +1,38 @@
+@sales =
+EXTRACT OrderDate DateTime,
+        OrderID int,
+        CustomerID int,
+        CustomerName string,
+        OrderLineID int,
+        StockItemID int,
+        StockItemName string,
+        Quantity int,
+        UnitPrice decimal
+FROM @sales_file
+USING Extractors.Tsv(skipFirstNRows: 1);
+
+@lineitems =
+SELECT OrderID,
+       OrderLineID,
+       StockItemID,
+       StockItemName,
+       Quantity,
+       UnitPrice,
+       Quantity * UnitPrice AS LineTotal
+FROM @sales;
+
+@orders = 
+SELECT OrderDate, OrderID, CustomerID, CustomerName, SUM(Quantity * UnitPrice) AS Total
+FROM @sales
+GROUP BY OrderDate, OrderID, CustomerID, CustomerName;
+
+OUTPUT @lineitems
+    TO @lineitems_file
+    ORDER BY OrderID, OrderLineID
+    USING Outputters.Tsv();
+
+OUTPUT @orders
+    TO @orders_file
+    ORDER BY OrderID
+    USING Outputters.Tsv();
+
