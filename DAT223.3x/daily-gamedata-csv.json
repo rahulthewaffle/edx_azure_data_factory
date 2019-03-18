@@ -1,8 +1,7 @@
 {
   "name": "daily-gamedata-csv",
   "properties": {
-    "structure": [
-      {
+    "structure": [{
         "name": "player",
         "type": "String"
       },
@@ -26,8 +25,7 @@
         "columnDelimiter": ",",
         "firstRowAsHeader": true
       },
-      "partitionedBy": [
-        {
+      "partitionedBy": [{
           "name": "Year",
           "value": {
             "type": "DateTime",

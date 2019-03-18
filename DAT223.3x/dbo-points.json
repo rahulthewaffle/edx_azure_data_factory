@@ -3,8 +3,7 @@
   "properties": {
     "type": "AzureSqlTable",
     "linkedServiceName": "sql-database",
-    "structure": [
-      {
+    "structure": [{
         "name": "player",
         "type": "String"
       },
