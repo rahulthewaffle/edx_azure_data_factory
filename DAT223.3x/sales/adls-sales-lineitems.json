@@ -39,7 +39,7 @@
       "folderPath": "sales/lineitems/{Year}/{Month}",
       "format": {
         "type": "TextFormat",
-        "columnDelimiter": ","
+        "columnDelimiter": "\t"
       },
       "partitionedBy": [
         {

@@ -46,8 +46,7 @@
       "fileName": "{Day}.txt",
       "format": {
         "type": "TextFormat",
-        "columnDelimiter": "\t",
-        "firstRowAsHeader": true
+        "columnDelimiter": "\t"
       },
       "partitionedBy": [
         {

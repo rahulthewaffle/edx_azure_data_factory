@@ -31,7 +31,7 @@
       "folderPath": "sales/orders/{Year}/{Month}",
       "format": {
         "type": "TextFormat",
-        "columnDelimiter": ","
+        "columnDelimiter": "\t"
       },
       "partitionedBy": [
         {
