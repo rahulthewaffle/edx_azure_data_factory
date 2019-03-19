@@ -1,21 +1,33 @@
 {
-  "name": "usql-summary",
+  "name": "usql-sales-lineitems",
   "properties": {
     "structure": [
       {
-        "name": "log_date",
+        "name": "orderid",
+        "type": "Int32"
+      },
+      {
+        "name": "orderlineid",
+        "type": "Int32"
+      },
+      {
+        "name": "stockitemid",
+        "type": "Int32"
+      },
+      {
+        "name": "stockitemname",
         "type": "String"
       },
       {
-        "name": "requests",
-        "type": "Int64"
+        "name": "quantity",
+        "type": "Int32"
       },
       {
-        "name": "bytes_in",
+        "name": "unitprice",
         "type": "Decimal"
       },
       {
-        "name": "bytes_out",
+        "name": "linetotal",
         "type": "Decimal"
       }
     ],
@@ -23,8 +35,8 @@
     "type": "AzureDataLakeStore",
     "linkedServiceName": "adl-store",
     "typeProperties": {
-      "fileName": "summary.txt",
-      "folderPath": "iislogs/summary/{Year}/{Month}",
+      "fileName": "{Day}.txt",
+      "folderPath": "sales/lineitems/{Year}/{Month}",
       "format": {
         "type": "TextFormat",
         "columnDelimiter": ","
@@ -45,11 +57,19 @@
             "date": "SliceStart",
             "format": "MM"
           }
+        },
+        {
+          "name": "Day",
+          "value": {
+            "type": "DateTime",
+            "date": "SliceStart",
+            "format": "dd"
+          }
         }
       ]
     },
     "availability": {
-      "frequency": "Month",
+      "frequency": "Day",
       "interval": 1
     }
   }

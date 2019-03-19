@@ -31,7 +31,7 @@
       {
         "name": "linetotal",
         "type": "Decimal"
-      },
+      }
     ],
     "typeProperties": {
       "tableName": "dbo.lineitems"
