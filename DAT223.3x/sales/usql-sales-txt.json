@@ -1,0 +1,85 @@
+{
+  "name": "usql-sales-txt",
+  "properties": {
+    "structure": [
+      {
+        "name": "orderdate",
+        "type": "Datetime"
+      },
+      {
+        "name": "orderid",
+        "type": "Int32"
+      },
+      {
+        "name": "customerid",
+        "type": "Int32"
+      },
+      {
+        "name": "customername",
+        "type": "String"
+      },
+      {
+        "name": "orderlineid",
+        "type": "Int32"
+      },
+      {
+        "name": "stockitemid",
+        "type": "Int32"
+      },
+      {
+        "name": "stockitemname",
+        "type": "String"
+      },
+      {
+        "name": "quantity",
+        "type": "Int32"
+      },
+      {
+        "name": "unitprice",
+        "type": "Decimal"
+      }
+    ],
+    "type": "AzureBlob",
+    "linkedServiceName": "blob-store",
+    "typeProperties": {
+      "folderPath": "adf-data/sales/{Year}/{Month}/",
+      "folderName": "{Day}.txt",
+      "format": {
+        "type": "TextFormat",
+        "columnDelimiter": "\t",
+        "firstRowAsHeader": true
+      },
+      "partitionedBy": [
+        {
+          "name": "Year",
+          "value": {
+            "type": "DateTime",
+            "date": "SliceStart",
+            "format": "yyyy"
+          }
+        },
+        {
+          "name": "Month",
+          "value": {
+            "type": "DateTime",
+            "date": "SliceStart",
+            "format": "MM"
+          }
+        },
+        {
+          "name": "Day",
+          "value": {
+            "type": "DateTime",
+            "date": "SliceStart",
+            "format": "dd"
+          }
+        }
+      ]
+    },
+    "external": true,
+    "availability": {
+      "frequency": "Day",
+      "interval": 1
+    }
+  }
+}
