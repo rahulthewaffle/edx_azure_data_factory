@@ -53,7 +53,7 @@
                     },
                     "translator": {
                         "type": "TabularTranslator",
-                        "columnMappings":"orderid:orderid,orderlineid:orderlineid,stockitemname:stockitemname,quantity:quantity,unitprice:unitprice,linetotal:linetotal"
+                        "columnMappings":"orderid:orderid,orderlineid:orderlineid,stockitemid:stockitemid,stockitemname:stockitemname,quantity:quantity,unitprice:unitprice,linetotal:linetotal"
                     }
                 },
                 "inputs": [
