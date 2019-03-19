@@ -21,7 +21,7 @@ SELECT OrderID,
        Quantity * UnitPrice AS LineTotal
 FROM @sales;
 
-@orders = 
+@orders =
 SELECT OrderDate, OrderID, CustomerID, CustomerName, SUM(Quantity * UnitPrice) AS Total
 FROM @sales
 GROUP BY OrderDate, OrderID, CustomerID, CustomerName;
@@ -35,4 +35,3 @@ OUTPUT @orders
     TO @orders_file
     ORDER BY OrderID
     USING Outputters.Tsv();
-

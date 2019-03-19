@@ -1,5 +1,5 @@
 {
-  "name": "usql-sales-orders",
+  "name": "sales-txt",
   "properties": {
     "structure": [
       {
@@ -19,19 +19,35 @@
         "type": "String"
       },
       {
-        "name": "total",
+        "name": "orderlineid",
+        "type": "Int32"
+      },
+      {
+        "name": "stockitemid",
+        "type": "Int32"
+      },
+      {
+        "name": "stockitemname",
+        "type": "String"
+      },
+      {
+        "name": "quantity",
+        "type": "Int32"
+      },
+      {
+        "name": "unitprice",
         "type": "Decimal"
       }
     ],
-    "published": false,
-    "type": "AzureDataLakeStore",
-    "linkedServiceName": "adl-store",
+    "type": "AzureBlob",
+    "linkedServiceName": "blob-store",
     "typeProperties": {
+      "folderPath": "adf-data/sales/{Year}/{Month}/",
       "fileName": "{Day}.txt",
-      "folderPath": "sales/orders/{Year}/{Month}",
       "format": {
         "type": "TextFormat",
-        "columnDelimiter": ","
+        "columnDelimiter": "\t",
+        "firstRowAsHeader": true
       },
       "partitionedBy": [
         {
@@ -60,6 +76,7 @@
         }
       ]
     },
+    "external": true,
     "availability": {
       "frequency": "Day",
       "interval": 1

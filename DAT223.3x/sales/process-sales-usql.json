@@ -1,0 +1,125 @@
+{
+    "name": "Process Sales - U-SQL",
+    "properties": {
+        "activities": [
+            {
+                "type": "DataLakeAnalyticsU-SQL",
+                "typeProperties": {
+                    "scriptPath": "adf-data/sales/sales.usql",
+                    "scriptLinkedService": "blob-store",
+                    "degreeOfParallelism": 2,
+                    "parameters": {
+                        "sales_file": "$$Text.Format('wasb://adf-data@edxintroadfrahuld.blob.core.windows.net/sales/{0:yyyy}/{1:MM}/{1:dd}.txt', SliceStart, SliceStart)",
+                        "lineitems_file": "$$Text.Format('sales/lineitems/{0:yyyy}/{1:MM}/{1:dd}.txt', SliceStart, SliceStart)",
+                        "orders_file": "$$Text.Format('sales/orders/{0:yyyy}/{1:MM}/{1:dd}.txt', SliceStart, SliceStart)"
+                    }
+                },
+                "inputs": [
+                    {
+                        "name": "sales-txt"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "adls-sales-lineitems"
+                    },
+                    {
+                      "name": "adls-sales-orders"
+                    }
+                ],
+                "policy": {
+                    "timeout": "01:00:00",
+                    "concurrency": 2,
+                    "retry": 2
+                },
+                "scheduler": {
+                    "frequency": "Day",
+                    "interval": 1
+                },
+                "name": "U-SQL Script to Process Sales Data into LineItem Totals and Order Totals",
+                "linkedServiceName": "adl-analytics"
+            },
+            {
+                "type": "Copy",
+                "typeProperties": {
+                    "source": {
+                        "type": "AzureDataLakeStoreSource",
+                        "recursive": false
+                    },
+                    "sink": {
+                        "type": "SqlSink",
+                        "writeBatchSize": 0,
+                        "writeBatchTimeout": "00:00:00"
+                    },
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "columnMappings":"orderid:orderid,orderlineid:orderlineid,stockitemname:stockitemname,quantity:quantity,unitprice:unitprice,linetotal:linetotal"
+                    }
+                },
+                "inputs": [
+                    {
+                        "name": "adls-sales-lineitems"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "dbo-line-items"
+                    }
+                ],
+                "policy": {
+                    "timeout": "01:00:00",
+                    "concurrency": 2,
+                    "retry": 2
+                },
+                "scheduler": {
+                    "frequency": "Day",
+                    "interval": 1
+                },
+                "name": "Copy summarized line item data to SQL"
+            },
+            {
+                "type": "Copy",
+                "typeProperties": {
+                    "source": {
+                        "type": "AzureDataLakeStoreSource",
+                        "recursive": false
+                    },
+                    "sink": {
+                        "type": "SqlSink",
+                        "writeBatchSize": 0,
+                        "writeBatchTimeout": "00:00:00"
+                    },
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "columnMappings": "orderdate:orderdate,orderid:orderid,customerid:customerid,customername:customername,total:total"
+                    }
+                },
+                "inputs": [
+                    {
+                        "name": "adls-sales-orders"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "dbo-orders"
+                    }
+                ],
+                "policy": {
+                    "timeout": "01:00:00",
+                    "concurrency": 2,
+                    "retry": 2
+                },
+                "scheduler": {
+                    "frequency": "Day",
+                    "interval": 1
+                },
+                "name": "Copy summarized order data to SQL"
+            }
+        ],
+        "start": "2016-01-01T00:00:00Z",
+        "end": "2016-06-01T23:59:59Z",
+        "isPaused": false,
+        "hubName": "edx-intro-adf-rahuldev-v1_hub",
+        "pipelineMode": "Scheduled"
+    }
+}
