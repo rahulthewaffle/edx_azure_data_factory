@@ -1,0 +1,44 @@
+{
+  "name": "dbo-line-items",
+  "properties": {
+    "type": "AzureSqlTable",
+    "linkedServiceName": "sql-database",
+    "structure": [
+      {
+        "name": "orderid",
+        "type": "Int32"
+      },
+      {
+        "name": "orderlineid",
+        "type": "Int32"
+      },
+      {
+        "name": "stockitemid",
+        "type": "Int32"
+      },
+      {
+        "name": "stockitemname",
+        "type": "String"
+      },
+      {
+        "name": "quantity",
+        "type": "Int32"
+      },
+      {
+        "name": "unitprice",
+        "type": "Decimal"
+      },
+      {
+        "name": "linetotal",
+        "type": "Decimal"
+      },
+    ],
+    "typeProperties": {
+      "tableName": "dbo.lineitems"
+    },
+    "availability": {
+      "frequency": "Day",
+      "interval": 1
+    }
+  }
+}
